@@ -67,7 +67,6 @@ module.exports = function createMeteorLibs(options, manifest, meteorBuildPath, m
     let indexJsString = '\'use strict\';\n';
     if (moduleName === 'meteor') {
       indexJsString += `require('meteor-webpack-client/runtime-config');\n`;
-      indexJsString += `require('${path.join(meteorClientPath, 'merged-stylesheets.css').replace(/\\/g, '/')}');\n`;
     }
     moduleDescription.dependencies.forEach(moduleDep => {
       indexJsString += `require('meteor/${moduleDep}');\n`;
