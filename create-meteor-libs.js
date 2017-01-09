@@ -52,7 +52,7 @@ module.exports = function createMeteorLibs(options, manifest, meteorBuildPath, m
    */
   function getModuleDependencies(modulePath) {
     const moduleSource = fs.readFileSync(modulePath);
-    const rechDeps = /[\n\r]+var ([$\w]+) = Package(?:\.([a-z\d]+)|\['([a-z\d-]+)'\])\.([$\w]+);/g;
+    const rechDeps = /[\n\r]+var ([$\w]+) = Package(?:\.([a-z\d]+)|\['([a-z\:\d-]+)'\])\.([$\w]+);/g;
     let dependencies = new Set();
 
     let dependency = rechDeps.exec(moduleSource);
@@ -64,6 +64,7 @@ module.exports = function createMeteorLibs(options, manifest, meteorBuildPath, m
   }
 
   function createMeteorLib(moduleName, moduleDescription) {
+    let packageName = moduleName.replace('_', ':');
     let indexJsString = '\'use strict\';\n';
     if (moduleName === 'meteor') {
       indexJsString += `require('meteor-webpack-client/runtime-config');\n`;
@@ -75,7 +76,7 @@ module.exports = function createMeteorLibs(options, manifest, meteorBuildPath, m
     if (moduleName === 'accounts-base') {
       indexJsString += `require('meteor/service-configuration');\n`;
     }
-    indexJsString += `var pkg = Package['${moduleName}'];
+    indexJsString += `var pkg = Package['${packageName}'];
 for(var key in pkg) {
   exports[key] = pkg[key];
 }

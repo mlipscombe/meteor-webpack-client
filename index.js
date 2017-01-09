@@ -54,7 +54,7 @@ module.exports = function loaderModule(options) {
         }
 
         const packageName = location[1].replace('_', ':');
-        resolveAliases[`meteor/${packageName}`] = path.join(meteorLibsPath, packageName);
+        resolveAliases[`meteor/${packageName}`] = path.join(meteorLibsPath, location[1]);
       });
       return resolveAliases;
     }
